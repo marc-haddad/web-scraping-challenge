@@ -1,35 +1,33 @@
-    #!/usr/bin/env python
-    # coding: utf-8
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 import pandas as pd
 
 
+def init_browser():
+
+    executable_path = {"executable_path": '/usr/local/bin/chromedriver'}
+    return Browser("chrome", **executable_path, headless=False)
+
+
 def scrape():
-
-    executable_path = {'executable_path': '/usr/local/bin/chromedriver'}
-    browser = Browser('chrome', **executable_path, headless=False)
-
+    browser = init_browser()
     url = "https://mars.nasa.gov/news/"
     browser.visit(url)
     html = browser.html
 
-    while True:
-        try:
-            soup = bs(html, 'html.parser')
-            news_title = soup.body.find("div", class_="content_title").text
-            news_p = soup.body.find("div", class_="article_teaser_body").text
-        except:
-            continue
-        else:
-            break
+    soup = bs(html, 'html.parser')
+    news_title = soup.body.find("div", class_="content_title").text
+    news_p = soup.body.find("div", class_="article_teaser_body").text
 
     url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
     browser.visit(url)
     browser.click_link_by_partial_text("FULL IMAGE")
-
+    i = 0
     while True:
         try:
+            i += 1
+            if i == 50:
+                return 1
             browser.click_link_by_partial_text("more info")
         except:
             continue
@@ -57,10 +55,13 @@ def scrape():
     hemi_names = ["Cerberus Hemisphere Enhanced", "Schiaparelli Hemisphere Enhanced",
                 "Syrtis Major Hemisphere Enhanced", "Valles Marineris Hemisphere Enhanced"]
     hemi_dicts = []
-
+    i = 0
     for hemi in hemi_names:
         while True:
             try:
+                i += 1
+                if i == 50:
+                    return 1
                 browser.click_link_by_partial_text(hemi)
             except:
                 continue
@@ -76,14 +77,14 @@ def scrape():
 
 
 
-    final_dict = {
-        "news_title": news_title,
-        "news_p": news_p,
-        "featured_image_url": featured_image_url,
-        "mars_weather": mars_weather,
-        "tables": tables,
-        "hemi_dicts": hemi_dicts
-    }
+    final_dict = {}
+
+    final_dict["news_title"] = news_title
+    final_dict["news_p"] = news_p
+    final_dict["featured_image_url"] = featured_image_url
+    final_dict["mars_weather"] = mars_weather
+    final_dict["tables"] = tables
+    final_dict["hemi_dicts"] = hemi_dicts
 
 
     return final_dict
