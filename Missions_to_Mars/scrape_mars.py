@@ -12,6 +12,8 @@ def init_browser():
 
 def scrape():
     browser = init_browser()
+
+    # Get latest news
     url = "https://mars.nasa.gov/news/"
     browser.visit(url)
 
@@ -47,6 +49,8 @@ def scrape():
 
     url = "https://space-facts.com/mars/"
     tables_df = pd.read_html(url)[0]
+    tables_df = tables_df.rename(columns={0: "Description", 1: "Value"})
+    tables = tables_df.to_html()
     tables = tables_df.to_html()
 
     url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"

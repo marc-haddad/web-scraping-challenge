@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Explore Mars</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 
 <body>
@@ -17,29 +18,54 @@
       <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Get the Latest Info!</a></p>
     </div>
 
-    <div class="row">
+    <div class="row p-3">
       <div class="col-md-12">
-        <h3>Latest Mars News</h3>
-        <p><h5><strong>{{ scrape_stuff.news_title }}</strong></h5></p>
-        <p>{{ scrape_stuff.news_p }}</p>
+        <h3>Latest Mars News: <u>{{ scrape_stuff.news_title }}</u></h3>
+        <p><h5>{{ scrape_stuff.news_p }}</h5></p>
       </div>
     </div>
-    <div class="row">
+    <div class="row p-3">
         <div class="col-md-8">
             <h3>Featured Image</h3>
-            <img src="{{ scrape_stuff.featured_image_url }}">
+            <img class="container" src="{{ scrape_stuff.featured_image_url }}" height="auto" >
+        </div>
+        <div class="col-md-4">
+            <h4>Current Weather on Mars</h4>
+            <p class="border-top border-left" style="padding-left: 2%;">{{ scrape_stuff.mars_weather }}</p>
+            <br>
+            <div class="row">
+                <div class="table table-hover">
+                    <h4>Mars Facts</h4>
+                    {{ scrape_stuff.tables|safe }}
+                </div>
+            </div>
         </div>
     </div>
-
+    <div class="row p-3">
+        <h2 class="center">Mars Hemispheres</h2>
+        <div class="row p-3">
+            <div class="col-md-6">
+                <img class="container" src="{{ scrape_stuff.hemi_dicts[0]['img_url'] }}" height="auto" >
+                <figcaption class="figure-caption text-center">{{ scrape_stuff.hemi_dicts[0]['title'] }}</figcaption>
+            </div>
+            <div class="col-md-6">
+                <img class="container" src="{{ scrape_stuff.hemi_dicts[1]['img_url'] }}" height="auto" >
+                <figcaption class="figure-caption text-center">{{ scrape_stuff.hemi_dicts[1]['title'] }}</figcaption>
+            </div>
+        </div>
+        <div class="row p-3">
+            <div class="col-md-6">
+                <img class="container" src="{{ scrape_stuff.hemi_dicts[2]['img_url'] }}" height="auto" >
+                <figcaption class="figure-caption text-center">{{ scrape_stuff.hemi_dicts[2]['title'] }}</figcaption>
+            </div>
+            <div class="col-md-6">
+                <img class="container" src="{{ scrape_stuff.hemi_dicts[3]['img_url'] }}" height="auto" >
+                <figcaption class="figure-caption text-center">{{ scrape_stuff.hemi_dicts[3]['title'] }}</figcaption>
+            </div>
+        </div>
+    </div>
   </div>
 </body>
 
 </html>
-<!--final_dict["news_title"] = news_title
-    final_dict["news_p"] = news_p
-    final_dict["featured_image_url"] = featured_image_url
-    final_dict["mars_weather"] = mars_weather
-    final_dict["tables"] = tables
-    final_dict["hemi_dicts"] = hemi_dicts
--->
 
