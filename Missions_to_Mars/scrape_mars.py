@@ -1,6 +1,7 @@
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 import pandas as pd
+import time
 
 
 def init_browser():
@@ -13,26 +14,22 @@ def scrape():
     browser = init_browser()
     url = "https://mars.nasa.gov/news/"
     browser.visit(url)
-    html = browser.html
 
+    time.sleep(3)
+
+    html = browser.html
     soup = bs(html, 'html.parser')
     news_title = soup.body.find("div", class_="content_title").text
     news_p = soup.body.find("div", class_="article_teaser_body").text
 
     url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
     browser.visit(url)
+
     browser.click_link_by_partial_text("FULL IMAGE")
-    i = 0
-    while True:
-        try:
-            i += 1
-            if i == 50:
-                return 1
-            browser.click_link_by_partial_text("more info")
-        except:
-            continue
-        else:
-            break
+    
+    time.sleep(3)
+
+    browser.click_link_by_partial_text("more info")
 
     html = browser.html
     soup = bs(html, 'html.parser')
@@ -41,13 +38,16 @@ def scrape():
     url = "https://twitter.com/marswxreport?lang=en"
     browser.visit(url)
 
+    time.sleep(1)
+
     html = browser.html
     soup = bs(html, 'html.parser')
 
     mars_weather = soup.find_all("p", class_="TweetTextSize")[0].text.replace("\n", " ").replace("\xa0", " ").replace("pic.twitter", " pic.twitter")
 
     url = "https://space-facts.com/mars/"
-    tables = pd.read_html(url)
+    tables_df = pd.read_html(url)[0]
+    tables = tables_df.to_html()
 
     url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
     browser.visit(url)
@@ -55,18 +55,14 @@ def scrape():
     hemi_names = ["Cerberus Hemisphere Enhanced", "Schiaparelli Hemisphere Enhanced",
                 "Syrtis Major Hemisphere Enhanced", "Valles Marineris Hemisphere Enhanced"]
     hemi_dicts = []
-    i = 0
+
     for hemi in hemi_names:
-        while True:
-            try:
-                i += 1
-                if i == 50:
-                    return 1
-                browser.click_link_by_partial_text(hemi)
-            except:
-                continue
-            else:
-                break
+        time.sleep(1)
+
+        browser.click_link_by_partial_text(hemi)
+
+        time.sleep(1)
+
         html = browser.html
         soup = bs(html, 'html.parser')
         img_url = soup.find("a", target="_blank")["href"]

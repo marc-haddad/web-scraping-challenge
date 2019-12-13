@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Explore Mars</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="jumbotron text-center">
+      <h1>Mission to Mars</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Get the Latest Info!</a></p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Latest Mars News</h3>
+        <p><h5><strong>{{ scrape_stuff.news_title }}</strong></h5></p>
+        <p>{{ scrape_stuff.news_p }}</p>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Featured Image</h3>
+            <img src="{{ scrape_stuff.featured_image_url }}">
+        </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
+<!--final_dict["news_title"] = news_title
+    final_dict["news_p"] = news_p
+    final_dict["featured_image_url"] = featured_image_url
+    final_dict["mars_weather"] = mars_weather
+    final_dict["tables"] = tables
+    final_dict["hemi_dicts"] = hemi_dicts
+-->
+
