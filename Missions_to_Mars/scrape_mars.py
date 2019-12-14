@@ -4,6 +4,7 @@ import pandas as pd
 import time
 
 
+# Initialize browser
 def init_browser():
 
     executable_path = {"executable_path": '/usr/local/bin/chromedriver'}
@@ -74,8 +75,6 @@ def scrape():
     for hemi in hemi_names:
 
         browser.click_link_by_partial_text(hemi)
-
-        time.sleep(0.5)
 
         html = browser.html
         soup = bs(html, 'html.parser')
