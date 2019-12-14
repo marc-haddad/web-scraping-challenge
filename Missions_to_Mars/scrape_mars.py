@@ -31,19 +31,14 @@ def scrape():
 
     # Get featured img url
     url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
-    browser.visit(url)
-
-        # Navigate to full-res img
-    browser.click_link_by_partial_text("FULL IMAGE")    
+    browser.visit(url)    
     
     time.sleep(1)
-    
-    browser.click_link_by_partial_text("more info")
 
         # Store relevant html info
     html = browser.html
     soup = bs(html, 'html.parser')
-    featured_image_url = "https://www.jpl.nasa.gov" + soup.figure.find("a")["href"]
+    featured_image_url = "https://www.jpl.nasa.gov" + soup.body.find_all("a", class_="fancybox")[1]["data-fancybox-href"]
 
     # Get the latest weather from official twitter
     url = "https://twitter.com/marswxreport?lang=en"
@@ -84,10 +79,10 @@ def scrape():
 
         html = browser.html
         soup = bs(html, 'html.parser')
+
         img_url = soup.find("a", target="_blank")["href"]
-        title = hemi
         # Append dict to initialized list
-        hemi_dicts.append({"title": title, "img_url": img_url})
+        hemi_dicts.append({"title": hemi, "img_url": img_url})
         browser.visit(url)
 
 
